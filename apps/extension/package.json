@@ -9,6 +9,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-rc.0",
     "@handytalk/shared": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"

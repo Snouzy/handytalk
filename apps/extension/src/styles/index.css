@@ -261,16 +261,124 @@ h1 {
   color: #4caf50;
 }
 
-/* Spam warning */
-.spam-warning {
+/* Comment history accordion */
+.comment-history {
+  position: relative;
   margin: 12px 0;
-  padding: 10px 12px;
-  background: #fff8e1;
-  border: 1px solid #ffc107;
+  border: 1px solid #dbdbdb;
   border-radius: 8px;
+}
+
+.comment-history--warn {
+  border-color: #ffc107;
+  background: #fff8e1;
+}
+
+.comment-history__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
   font-size: 13px;
+  font-weight: 600;
+  color: #262626;
+  cursor: pointer;
+  text-align: left;
+}
+
+.comment-history--warn .comment-history__header {
   color: #8d6e00;
+}
+
+.comment-history__chevron {
+  display: inline-block;
+  transition: transform 0.2s;
+  font-size: 12px;
+}
+
+.comment-history__chevron[data-open="true"] {
+  transform: rotate(90deg);
+}
+
+.comment-history__list {
+  list-style: none;
+  padding: 0 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment-history__item {
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+}
+
+.comment-history__item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.comment-history__badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  color: #555;
+}
+
+.comment-history__date {
+  font-size: 11px;
+  color: #999;
+}
+
+.comment-history__text {
+  font-size: 12px;
+  color: #555;
   line-height: 1.4;
+}
+
+.comment-history__text--truncated {
+  display: block;
+  cursor: pointer;
+  text-decoration: underline dotted #999;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+}
+
+.comment-history__text--truncated:hover {
+  color: #262626;
+}
+
+.comment-history__tooltip {
+  max-width: 340px;
+  padding: 8px 12px;
+  background: #262626;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  word-break: break-word;
+  z-index: 100;
+  transform-origin: var(--transform-origin);
+  transition: transform 150ms, opacity 150ms;
+}
+
+.comment-history__tooltip[data-starting-style],
+.comment-history__tooltip[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.95);
 }
 
 /* Error */

@@ -1,15 +1,24 @@
 const API_BASE = "http://localhost:3001";
 export const SPAM_THRESHOLD_DAYS = 3;
 
-export interface LastCommentInfo {
-  username: string;
-  last_commented_at: string;
+export interface CommentHistoryEntry {
+  id: string;
+  comment_text: string;
+  style: string;
+  commented_at: string;
   days_ago: number;
 }
 
-export async function checkLastComment(username: string): Promise<LastCommentInfo | null> {
+export interface CommentHistoryResponse {
+  username: string;
+  total: number;
+  most_recent_days_ago: number | null;
+  comments: CommentHistoryEntry[];
+}
+
+export async function fetchCommentHistory(username: string): Promise<CommentHistoryResponse | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/comments/${encodeURIComponent(username)}/last`);
+    const res = await fetch(`${API_BASE}/api/comments/${encodeURIComponent(username)}/history`);
     if (!res.ok) return null;
     return await res.json();
   } catch {

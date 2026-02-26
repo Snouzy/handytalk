@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "base-ui-react": {
+      "source": "jackspace/claudeskillz",
+      "sourceType": "github",
+      "computedHash": "2b50873be1dd84c89bc11cc7ddb818f2d8021987684f88e795369dc13a9c6f1c"
+    }
+  }
+}
