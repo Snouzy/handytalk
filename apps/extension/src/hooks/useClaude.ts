@@ -8,10 +8,10 @@ export function useClaude(apiKey: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   const send = useCallback(
-    async (prompt: string) => {
+    async (prompt: string): Promise<ParsedResult | null> => {
       if (!apiKey) {
         setError("Clé API manquante.");
-        return;
+        return null;
       }
 
       setLoading(true);
@@ -22,10 +22,12 @@ export function useClaude(apiKey: string | null) {
         const raw = await callClaude(apiKey, prompt);
         const parsed = parseResponse(raw);
         setResult(parsed);
+        return parsed;
       } catch (err) {
         const msg =
           err instanceof Error ? err.message : "Une erreur est survenue.";
         setError(msg);
+        return null;
       } finally {
         setLoading(false);
       }

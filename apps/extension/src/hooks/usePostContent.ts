@@ -1,7 +1,13 @@
 import { useState, useCallback } from "react";
 
+function parseAuthorUsername(content: string): string | null {
+  const match = content.match(/\[Auteur: @(.+?)\]/);
+  return match ? match[1] : null;
+}
+
 export function usePostContent() {
   const [postContent, setPostContent] = useState<string | null>(null);
+  const [authorUsername, setAuthorUsername] = useState<string | null>(null);
   const [extracting, setExtracting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,6 +54,7 @@ export function usePostContent() {
       }
 
       setPostContent(content);
+      setAuthorUsername(parseAuthorUsername(content));
       return content;
     } catch (err) {
       const msg =
@@ -59,5 +66,5 @@ export function usePostContent() {
     }
   }, []);
 
-  return { postContent, extracting, error, extract, setPostContent };
+  return { postContent, authorUsername, extracting, error, extract, setPostContent };
 }
