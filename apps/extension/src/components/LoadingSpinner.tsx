@@ -1,8 +1,8 @@
 export function LoadingSpinner() {
   return (
-    <div className="loading-container">
+    <div className="text-center py-6">
       <div className="spinner" />
-      <p>⏳ Génération en cours...</p>
+      <p className="text-sm text-ig-muted mt-3">⏳ Génération en cours...</p>
     </div>
   );
 }

@@ -17,14 +17,25 @@ export function ResultPanel({ result, onRegenerate }: Props) {
   };
 
   return (
-    <div className="result-container">
-      <label className="label">💬 Commentaire</label>
-      <textarea className="comment-output" rows={3} readOnly value={result.comment} />
-      <div className="btn-group">
-        <button className="btn-secondary" onClick={handleCopy}>
+    <div className="mt-4">
+      <label className="block text-[13px] font-semibold text-ig-muted mb-1.5">💬 Commentaire</label>
+      <textarea
+        className="w-full p-3 border border-ig-border rounded-lg text-sm font-[inherit] text-ig-text resize-y outline-none leading-relaxed focus:border-ig-blue"
+        rows={3}
+        readOnly
+        value={result.comment}
+      />
+      <div className="flex gap-2 mt-3">
+        <button
+          className="flex-1 py-2 px-4 bg-white text-ig-blue border border-ig-blue rounded-lg text-[13px] font-semibold cursor-pointer transition-colors duration-200 hover:bg-ig-blue hover:text-white"
+          onClick={handleCopy}
+        >
           {copyLabel}
         </button>
-        <button className="btn-secondary" onClick={onRegenerate}>
+        <button
+          className="flex-1 py-2 px-4 bg-white text-ig-blue border border-ig-blue rounded-lg text-[13px] font-semibold cursor-pointer transition-colors duration-200 hover:bg-ig-blue hover:text-white"
+          onClick={onRegenerate}
+        >
           🔄 Régénérer
         </button>
       </div>

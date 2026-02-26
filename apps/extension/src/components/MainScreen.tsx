@@ -75,12 +75,13 @@ export function MainScreen({ apiKey, onSettings }: Props) {
 
   return (
     <>
-      <label className="label">🎭 Style</label>
+      <label className="block text-[13px] font-semibold text-ig-muted mb-1.5">🎭 Style</label>
       <StyleBadges selected={style} onSelect={setStyle} />
 
-      <label className="checkbox-label">
+      <label className="flex items-center gap-2 text-[13px] text-ig-text cursor-pointer mb-3">
         <input
           type="checkbox"
+          className="size-4 accent-ig-blue cursor-pointer"
           checked={includeComments}
           onChange={(e) => setIncludeComments(e.target.checked)}
         />
@@ -88,7 +89,10 @@ export function MainScreen({ apiKey, onSettings }: Props) {
       </label>
 
       {(phase === "idle" || globalError) && (
-        <button className="btn-primary" onClick={handleGenerate}>
+        <button
+          className="w-full py-2.5 px-4 bg-ig-blue text-white border-none rounded-lg text-sm font-semibold cursor-pointer transition-colors duration-200 hover:bg-ig-blue-hover active:bg-ig-blue-active"
+          onClick={handleGenerate}
+        >
           ✨ Générer un commentaire
         </button>
       )}
@@ -111,7 +115,10 @@ export function MainScreen({ apiKey, onSettings }: Props) {
 
       {globalError && <ErrorMessage message={globalError} />}
 
-      <button className="settings-link" onClick={onSettings}>
+      <button
+        className="block text-center mt-4 text-[13px] text-ig-muted bg-transparent border-none cursor-pointer transition-colors duration-200 hover:text-ig-blue mx-auto"
+        onClick={onSettings}
+      >
         ⚙️ Paramètres
       </button>
     </>

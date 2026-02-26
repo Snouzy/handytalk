@@ -1,376 +1,59 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import "tailwindcss";
+
+@theme {
+  --color-ig-blue: #0095f6;
+  --color-ig-blue-hover: #0081d6;
+  --color-ig-blue-active: #006bbd;
+  --color-ig-text: #262626;
+  --color-ig-muted: #999;
+  --color-ig-subtle: #555;
+  --color-ig-border: #dbdbdb;
+  --color-ig-bg: #f5f5f5;
+  --color-ig-bg-hover: #e8f4ff;
+  --color-ig-warn: #ffc107;
+  --color-ig-warn-bg: #fff8e1;
+  --color-ig-warn-text: #8d6e00;
+  --color-ig-error: #ff4458;
+  --color-ig-error-bg: #fff0f1;
+  --color-ig-success: #4caf50;
+  --color-ig-success-bg: #e0f7e0;
+  --color-ig-tooltip: #262626;
+
+  --animate-spin: spin 0.8s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  width: 400px;
-  background: #fff;
-  color: #262626;
+/* Base resets */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    width: 400px;
+    @apply bg-white text-ig-text;
+  }
 }
 
-.container {
-  padding: 24px;
+/* Spinner - needs custom border colors */
+@utility spinner {
+  @apply size-8 rounded-full mx-auto animate-spin;
+  border: 3px solid var(--color-ig-border);
+  border-top-color: var(--color-ig-blue);
 }
 
-h1 {
-  font-size: 18px;
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #262626;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* Setup screen */
-.setup-text {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 12px;
-}
-
-.api-key-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
-  font-size: 14px;
-  outline: none;
-  margin-bottom: 12px;
-  transition: border-color 0.2s;
-}
-
-.api-key-input:focus {
-  border-color: #0095f6;
-}
-
-/* Style badges */
-.style-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 14px;
-}
-
-.style-badge {
-  padding: 5px 10px;
-  background: #f5f5f5;
-  border: 1.5px solid #dbdbdb;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #555;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.style-badge:hover {
-  border-color: #0095f6;
-  color: #0095f6;
-  background: #e8f4ff;
-}
-
-.style-badge.active {
-  background: #0095f6;
-  color: #fff;
-  border-color: #0095f6;
-}
-
-/* Checkbox */
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #262626;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-
-.checkbox-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #0095f6;
-  cursor: pointer;
-}
-
-/* Buttons */
-.btn-primary {
-  width: 100%;
-  padding: 10px 16px;
-  background: #0095f6;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-primary:hover {
-  background: #0081d6;
-}
-
-.btn-primary:active {
-  background: #006bbd;
-}
-
-.btn-secondary {
-  flex: 1;
-  padding: 8px 16px;
-  background: #fff;
-  color: #0095f6;
-  border: 1px solid #0095f6;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.btn-secondary:hover {
-  background: #0095f6;
-  color: #fff;
-}
-
-.btn-group {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-/* Loading */
-.loading-container {
-  text-align: center;
-  padding: 24px 0;
-}
-
-.loading-container p {
-  font-size: 14px;
-  color: #999;
-  margin-top: 12px;
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #dbdbdb;
-  border-top-color: #0095f6;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Prompt editor */
-.prompt-editor {
-  margin-top: 16px;
-}
-
-.label {
-  display: block;
-  font-size: 13px;
-  font-weight: 600;
-  color: #999;
-  margin-bottom: 6px;
-}
-
-.prompt-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
-  font-size: 13px;
-  font-family: inherit;
-  color: #262626;
-  resize: vertical;
-  outline: none;
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.prompt-input:focus {
-  border-color: #0095f6;
-}
-
-/* Result */
-.result-container {
-  margin-top: 16px;
-}
-
-.comment-output {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: inherit;
-  color: #262626;
-  resize: vertical;
-  outline: none;
-  line-height: 1.5;
-}
-
-.comment-output:focus {
-  border-color: #0095f6;
-}
-
-/* GIF keywords */
-.gif-label {
-  margin-top: 16px;
-}
-
-.gif-keywords {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 6px;
-}
-
-.gif-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  background: #f0f0f0;
-  border: 1px solid #dbdbdb;
-  border-radius: 20px;
-  font-size: 13px;
-  color: #262626;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.gif-chip:hover {
-  background: #e0f0ff;
-  border-color: #0095f6;
-  color: #0095f6;
-}
-
-.gif-chip-copied {
-  background: #e0f7e0;
-  border-color: #4caf50;
-  color: #4caf50;
-}
-
-/* Comment history accordion */
-.comment-history {
-  position: relative;
-  margin: 12px 0;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
-}
-
-.comment-history--warn {
-  border-color: #ffc107;
-  background: #fff8e1;
-}
-
-.comment-history__header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px 12px;
-  background: none;
-  border: none;
-  font-size: 13px;
-  font-weight: 600;
-  color: #262626;
-  cursor: pointer;
-  text-align: left;
-}
-
-.comment-history--warn .comment-history__header {
-  color: #8d6e00;
-}
-
-.comment-history__chevron {
-  display: inline-block;
-  transition: transform 0.2s;
-  font-size: 12px;
-}
-
-.comment-history__chevron[data-open="true"] {
-  transform: rotate(90deg);
-}
-
-.comment-history__list {
-  list-style: none;
-  padding: 0 12px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.comment-history__item {
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.03);
-  border-radius: 6px;
-}
-
-.comment-history__item-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.comment-history__badge {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  background: #f0f0f0;
-  border-radius: 12px;
-  color: #555;
-}
-
-.comment-history__date {
-  font-size: 11px;
-  color: #999;
-}
-
-.comment-history__text {
-  font-size: 12px;
-  color: #555;
-  line-height: 1.4;
-}
-
-.comment-history__text--truncated {
-  display: block;
-  cursor: pointer;
-  text-decoration: underline dotted #999;
-  text-underline-offset: 2px;
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  text-align: left;
-}
-
-.comment-history__text--truncated:hover {
-  color: #262626;
-}
-
+/* Base UI tooltip overrides — must stay as CSS classes */
 .comment-history__tooltip {
-  max-width: 340px;
-  padding: 8px 12px;
-  background: #262626;
-  color: #fff;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 6px;
+  @apply max-w-[340px] px-3 py-2 bg-ig-tooltip text-white text-xs leading-relaxed rounded-md break-words z-100;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  word-break: break-word;
-  z-index: 100;
   transform-origin: var(--transform-origin);
   transition: transform 150ms, opacity 150ms;
 }
@@ -379,35 +62,4 @@ h1 {
 .comment-history__tooltip[data-ending-style] {
   opacity: 0;
   transform: scale(0.95);
-}
-
-/* Error */
-.error-container {
-  margin-top: 16px;
-  padding: 12px;
-  background: #fff0f1;
-  border-radius: 8px;
-}
-
-.error-message {
-  font-size: 13px;
-  color: #ff4458;
-}
-
-/* Settings link */
-.settings-link {
-  display: block;
-  text-align: center;
-  margin-top: 16px;
-  font-size: 13px;
-  color: #999;
-  text-decoration: none;
-  cursor: pointer;
-  background: none;
-  border: none;
-  transition: color 0.2s;
-}
-
-.settings-link:hover {
-  color: #0095f6;
 }
