@@ -17,17 +17,24 @@ export function GifKeywords({ gifs }: Props) {
 
   return (
     <>
-      <label className="label gif-label">🎞️ Mots-clés GIF</label>
-      <div className="gif-keywords">
-        {gifs.map((kw, i) => (
-          <span
-            key={i}
-            className={`gif-chip ${copiedIndex === i ? "gif-chip-copied" : ""}`}
-            onClick={() => handleCopy(kw, i)}
-          >
-            {copiedIndex === i ? "copied!" : kw}
-          </span>
-        ))}
+      <label className="block text-[13px] font-bold text-retro-brown-mid mb-1.5 mt-4 uppercase tracking-wide">🎞️ Mots-clés GIF</label>
+      <div className="flex flex-wrap gap-2 mt-1.5">
+        {gifs.map((kw, i) => {
+          const isCopied = copiedIndex === i;
+          return (
+            <span
+              key={i}
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-[13px] font-bold cursor-pointer border-2 transition-all duration-200 ${
+                isCopied
+                  ? "bg-retro-jade-bg border-retro-jade text-retro-jade"
+                  : "bg-white border-retro-brown text-retro-brown hover:bg-retro-turquoise hover:text-white hover:border-retro-turquoise hover:-rotate-2"
+              }`}
+              onClick={() => handleCopy(kw, i)}
+            >
+              {isCopied ? "copied!" : kw}
+            </span>
+          );
+        })}
       </div>
     </>
   );

@@ -6,15 +6,18 @@ interface Props {
 
 export function PromptEditor({ prompt, onChange, onSend }: Props) {
   return (
-    <div className="prompt-editor">
-      <label className="label">📝 Prompt</label>
+    <div className="mt-4 animate-slide-up">
+      <label className="block text-[13px] font-bold text-retro-brown-mid mb-1.5 uppercase tracking-wide">📝 Prompt</label>
       <textarea
-        className="prompt-input"
+        className="retro-input w-full p-3 text-[13px] font-[inherit] text-retro-brown resize-y leading-relaxed mb-3"
         rows={8}
         value={prompt}
         onChange={(e) => onChange(e.target.value)}
       />
-      <button className="btn-primary" onClick={onSend}>
+      <button
+        className="retro-btn w-full py-2.5 px-4 bg-retro-red text-white"
+        onClick={onSend}
+      >
         🚀 Envoyer
       </button>
     </div>

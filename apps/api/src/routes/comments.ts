@@ -52,3 +52,37 @@ commentsRouter.get("/:username/last", async (req, res) => {
     days_ago: daysAgo,
   });
 });
+
+commentsRouter.get("/:username/history", async (req, res) => {
+  const { username } = req.params;
+
+  const rows = await db
+    .select()
+    .from(commentHistory)
+    .where(eq(commentHistory.instagramUsername, username))
+    .orderBy(desc(commentHistory.commentedAt));
+
+  const now = new Date();
+  const comments = rows.map((row) => {
+    const daysAgo = Math.max(
+      0,
+      Math.floor((now.getTime() - row.commentedAt.getTime()) / (1000 * 60 * 60 * 24))
+    );
+    return {
+      id: row.id,
+      comment_text: row.commentText,
+      style: row.style,
+      commented_at: row.commentedAt.toISOString(),
+      days_ago: daysAgo,
+    };
+  });
+
+  const mostRecentDaysAgo = comments.length > 0 ? comments[0].days_ago : null;
+
+  res.json({
+    username,
+    total: comments.length,
+    most_recent_days_ago: mostRecentDaysAgo,
+    comments,
+  });
+});
