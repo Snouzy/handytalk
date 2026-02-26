@@ -1,5 +1,5 @@
 <div align="center">
-<h1>🤙 HandTalk</h1>
+<h1>🤙 handytalk</h1>
 <h3><em>AI-powered Instagram comment generator — Chrome Extension</em></h3>
 <p>
 <img src="https://img.shields.io/badge/Chrome-Extension-4285F4?style=flat&logo=googlechrome&logoColor=white" alt="Chrome Extension">
@@ -11,7 +11,7 @@
 
 ## About
 
-HandTalk is a Chrome extension that generates authentic, engaging Instagram comments using Claude AI. It extracts the post content directly from the page, lets you pick a comment style, edit the prompt, and gives you GIF keyword suggestions — all from a clean popup.
+handytalk is a Chrome extension that generates authentic, engaging Instagram comments using Claude AI. It extracts the post content directly from the page, lets you pick a comment style, edit the prompt, and gives you GIF keyword suggestions — all from a clean popup.
 
 ## Features
 
@@ -34,8 +34,8 @@ HandTalk is a Chrome extension that generates authentic, engaging Instagram comm
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/m6b9/handtalk.git
-   cd handtalk
+   git clone https://github.com/m6b9/handytalk.git
+   cd handytalk
    ```
 
 2. **Load in Chrome**
@@ -43,18 +43,18 @@ HandTalk is a Chrome extension that generates authentic, engaging Instagram comm
    - Go to `chrome://extensions/`
    - Enable **Developer mode** (top right)
    - Click **Load unpacked**
-   - Select the `handtalk` folder
+   - Select the `handytalk` folder
 
 3. **Set up your API key**
 
-   - Click the HandTalk extension icon
+   - Click the handytalk extension icon
    - Enter your Anthropic API key
    - Done
 
 ### Usage
 
 1. Navigate to any Instagram post
-2. Click the HandTalk icon
+2. Click the handytalk icon
 3. Pick a style badge (😎 Chill, 🔥 Controversial, 🧠 Expert, etc.)
 4. Click **Generate** — the post content is extracted and the prompt is shown
 5. Edit the prompt if needed, then click **Send**
@@ -74,7 +74,7 @@ HandTalk is a Chrome extension that generates authentic, engaging Instagram comm
 ## Project Structure
 
 ```
-handtalk/
+handytalk/
 ├── manifest.json    # Chrome extension config (Manifest V3)
 ├── popup.html       # Extension popup UI
 ├── popup.js         # Prompt building, API calls, style system
