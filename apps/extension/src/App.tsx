@@ -9,8 +9,8 @@ export function App() {
   if (loading) return null;
 
   return (
-    <div className="p-8 bg-org-sand min-h-screen">
-      <h1 className="font-serif text-xl font-semibold text-center mb-6 text-org-earth">💬 Instagram Comment AI</h1>
+    <div className="p-6 bg-retro-cream">
+      <h1 className="retro-title text-xl text-center mb-5">💬 Instagram Comment AI</h1>
       {apiKey ? (
         <MainScreen apiKey={apiKey} onSettings={remove} />
       ) : (

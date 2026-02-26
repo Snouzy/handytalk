@@ -75,13 +75,13 @@ export function MainScreen({ apiKey, onSettings }: Props) {
 
   return (
     <>
-      <label className="block text-[13px] font-semibold text-org-earth-muted mb-2">🎭 Style</label>
+      <label className="block text-[13px] font-bold text-retro-brown-mid mb-1.5 uppercase tracking-wide">🎭 Style</label>
       <StyleBadges selected={style} onSelect={setStyle} />
 
-      <label className="flex items-center gap-2 text-[13px] text-org-earth cursor-pointer mb-4">
+      <label className="flex items-center gap-2 text-[13px] text-retro-brown cursor-pointer mb-3 font-semibold">
         <input
           type="checkbox"
-          className="size-4 accent-org-sage cursor-pointer"
+          className="size-4 accent-retro-purple cursor-pointer"
           checked={includeComments}
           onChange={(e) => setIncludeComments(e.target.checked)}
         />
@@ -90,7 +90,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
 
       {(phase === "idle" || globalError) && (
         <button
-          className="w-full py-3 px-4 bg-org-sage text-white border-none rounded-2xl text-sm font-semibold cursor-pointer transition-all duration-400 ease-out hover:bg-org-sage-deep hover:scale-[1.02] active:scale-[0.98]"
+          className="retro-btn w-full py-2.5 px-4 bg-retro-mustard text-retro-brown"
           onClick={handleGenerate}
         >
           ✨ Générer un commentaire
@@ -116,7 +116,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
       {globalError && <ErrorMessage message={globalError} />}
 
       <button
-        className="block text-center mt-5 text-[13px] text-org-earth-muted bg-transparent border-none cursor-pointer transition-all duration-300 ease-out hover:text-org-sage mx-auto"
+        className="block text-center mt-4 text-[13px] text-retro-brown-mid bg-transparent border-none cursor-pointer font-bold uppercase tracking-wide transition-colors duration-200 hover:text-retro-purple mx-auto"
         onClick={onSettings}
       >
         ⚙️ Paramètres

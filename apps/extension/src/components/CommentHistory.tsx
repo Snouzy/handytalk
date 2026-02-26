@@ -30,22 +30,18 @@ export function CommentHistory({ history }: Props) {
   return (
     <Tooltip.Provider>
       <div
-        className={`relative my-4 border rounded-2xl transition-all duration-300 ease-out ${
-          isRecent
-            ? "border-org-terracotta bg-org-terracotta-bg"
-            : "border-org-sand-dark bg-white"
-        }`}
+        className={`relative my-3 ${isRecent ? "retro-card-warn" : "retro-card"}`}
         ref={portalRef}
       >
         <button
-          className={`flex items-center gap-2 w-full px-4 py-3 bg-transparent border-none text-[13px] font-semibold cursor-pointer text-left ${
-            isRecent ? "text-org-terracotta" : "text-org-earth"
+          className={`flex items-center gap-2 w-full px-3 py-2.5 bg-transparent border-none text-[13px] font-bold cursor-pointer text-left ${
+            isRecent ? "text-retro-orange" : "text-retro-brown"
           }`}
           onClick={() => setOpen(!open)}
           type="button"
         >
           <span
-            className={`inline-block text-xs transition-transform duration-300 ease-out ${open ? "rotate-90" : ""}`}
+            className={`inline-block text-xs transition-transform duration-200 ${open ? "rotate-90" : ""}`}
           >
             ▸
           </span>
@@ -56,20 +52,20 @@ export function CommentHistory({ history }: Props) {
         </button>
 
         {open && (
-          <ul className="list-none px-4 pb-3 flex flex-col gap-2 animate-fade-in">
+          <ul className="list-none px-3 pb-2.5 flex flex-col gap-2 animate-fade-in">
             {history.comments.map((c) => {
               const styleDef = STYLES[c.style as keyof typeof STYLES];
               const isTruncated = c.comment_text.length > 80;
 
               return (
-                <li key={c.id} className="p-2.5 bg-org-sand/50 rounded-xl">
+                <li key={c.id} className="p-2 bg-retro-cream rounded-lg border border-retro-brown-light">
                   <div className="flex items-center justify-between mb-1">
                     {styleDef && (
-                      <span className="text-[11px] font-semibold px-2 py-0.5 bg-org-sage-light rounded-full text-org-earth-light">
+                      <span className="text-[11px] font-bold px-2 py-0.5 bg-retro-purple-light rounded-full text-retro-purple border border-retro-purple">
                         {styleDef.emoji} {styleDef.label}
                       </span>
                     )}
-                    <span className="text-[11px] text-org-earth-muted">
+                    <span className="text-[11px] text-retro-brown-mid font-semibold">
                       {formatDate(c.commented_at)}
                     </span>
                   </div>
@@ -77,7 +73,7 @@ export function CommentHistory({ history }: Props) {
                     <Tooltip.Root>
                       <Tooltip.Trigger
                         render={<span />}
-                        className="block text-xs text-org-earth-light leading-snug cursor-pointer underline decoration-dotted decoration-org-earth-muted underline-offset-2 bg-transparent border-none p-0 font-[inherit] text-left hover:text-org-earth"
+                        className="block text-xs text-retro-brown-mid leading-snug cursor-pointer underline decoration-dotted decoration-retro-brown-light underline-offset-2 bg-transparent border-none p-0 font-[inherit] text-left hover:text-retro-purple"
                       >
                         {truncate(c.comment_text, 80)}
                       </Tooltip.Trigger>
@@ -90,7 +86,7 @@ export function CommentHistory({ history }: Props) {
                       </Tooltip.Portal>
                     </Tooltip.Root>
                   ) : (
-                    <p className="text-xs text-org-earth-light leading-snug">
+                    <p className="text-xs text-retro-brown-mid leading-snug">
                       {c.comment_text}
                     </p>
                   )}

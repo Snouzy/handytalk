@@ -15,17 +15,17 @@ export function SetupScreen({ onSave }: Props) {
 
   return (
     <div className="animate-fade-in">
-      <p className="text-sm text-org-earth-muted mb-3">🔑 Entrez votre clé API Anthropic pour commencer :</p>
+      <p className="text-sm text-retro-brown-mid mb-3 font-semibold">🔑 Entrez votre clé API Anthropic pour commencer :</p>
       <input
         type="password"
-        className="w-full px-4 py-3 border border-org-sand-dark rounded-2xl text-sm outline-none mb-3 transition-all duration-300 ease-out bg-white text-org-earth focus:border-org-sage focus:ring-2 focus:ring-org-sage-light"
+        className="retro-input w-full px-3 py-2.5 text-sm text-retro-brown mb-3"
         placeholder="sk-ant-..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSave()}
       />
       <button
-        className="w-full py-3 px-4 bg-org-sage text-white border-none rounded-2xl text-sm font-semibold cursor-pointer transition-all duration-300 ease-out hover:bg-org-sage-deep hover:scale-[1.02] active:scale-[0.98]"
+        className="retro-btn w-full py-2.5 px-4 bg-retro-mustard text-retro-brown"
         onClick={handleSave}
       >
         ✅ Sauvegarder
