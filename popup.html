@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>💬 Instagram Comment AI</h1>
+
+    <!-- Setup screen (visible by default, hidden once API key is found) -->
+    <div id="setup-screen">
+      <p class="setup-text">🔑 Entrez votre clé API Anthropic pour commencer :</p>
+      <input type="password" id="api-key-input" placeholder="sk-ant-..." />
+      <button id="save-key-btn" class="btn-primary">✅ Sauvegarder</button>
+    </div>
+
+    <!-- Main screen -->
+    <div id="main-screen" class="hidden">
+      <label class="label">🎭 Style</label>
+      <div id="style-badges" class="style-badges">
+        <button class="style-badge active" data-style="chill">😎 Chill</button>
+        <button class="style-badge" data-style="controversial">🔥 Controversial</button>
+        <button class="style-badge" data-style="expert">🧠 Expert</button>
+        <button class="style-badge" data-style="drole">😂 Drôle</button>
+        <button class="style-badge" data-style="curieux">🤔 Curieux</button>
+        <button class="style-badge" data-style="hype">🚀 Hype</button>
+      </div>
+
+      <label class="checkbox-label">
+        <input type="checkbox" id="include-comments" />
+        <span>💬 Inclure les commentaires</span>
+      </label>
+      <button id="generate-btn" class="btn-primary">✨ Générer un commentaire</button>
+
+      <!-- Prompt editor -->
+      <div id="prompt-editor" class="hidden">
+        <label for="prompt-input" class="label">📝 Prompt</label>
+        <textarea id="prompt-input" rows="8"></textarea>
+        <button id="send-btn" class="btn-primary">🚀 Envoyer</button>
+      </div>
+
+      <div id="loading" class="hidden">
+        <div class="spinner"></div>
+        <p>⏳ Génération en cours...</p>
+      </div>
+
+      <div id="result" class="hidden">
+        <label class="label">💬 Commentaire</label>
+        <textarea id="comment-output" rows="3" readonly></textarea>
+        <div class="btn-group">
+          <button id="copy-btn" class="btn-secondary">📋 Copier</button>
+          <button id="regenerate-btn" class="btn-secondary">🔄 Régénérer</button>
+        </div>
+
+        <label class="label gif-label">🎞️ Mots-clés GIF</label>
+        <div id="gif-keywords" class="gif-keywords"></div>
+      </div>
+
+      <div id="error" class="hidden">
+        <p id="error-message"></p>
+      </div>
+    </div>
+
+    <a href="#" id="settings-link" class="settings-link hidden">⚙️ Paramètres</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
