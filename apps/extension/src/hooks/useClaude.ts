@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { callClaude, parseResponse } from "../lib/claude";
-import type { ParsedResult } from "@m6b9/shared";
+import type { ParsedResult } from "@handytalk/shared";
 
 export function useClaude(apiKey: string | null) {
   const [result, setResult] = useState<ParsedResult | null>(null);

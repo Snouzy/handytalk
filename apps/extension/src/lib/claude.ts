@@ -1,4 +1,4 @@
-import type { ParsedResult } from "@m6b9/shared";
+import type { ParsedResult } from "@handytalk/shared";
 
 export async function callClaude(apiKey: string, prompt: string): Promise<string> {
   const res = await fetch("https://api.anthropic.com/v1/messages", {

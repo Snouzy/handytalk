@@ -1,5 +1,5 @@
 {
-  "name": "@m6b9/extension",
+  "name": "@handytalk/extension",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@m6b9/shared": "workspace:*",
+    "@handytalk/shared": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

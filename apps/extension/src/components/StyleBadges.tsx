@@ -1,4 +1,4 @@
-import type { CommentStyleKey } from "@m6b9/shared";
+import type { CommentStyleKey } from "@handytalk/shared";
 import { STYLES, STYLE_KEYS } from "../lib/prompt";
 
 interface Props {

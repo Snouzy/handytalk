@@ -1,4 +1,4 @@
-import type { ExtractMessage, ExtractResponse } from "@m6b9/shared";
+import type { ExtractMessage, ExtractResponse } from "@handytalk/shared";
 
 chrome.runtime.onMessage.addListener(
   (message: ExtractMessage, _sender, sendResponse: (r: ExtractResponse) => void) => {

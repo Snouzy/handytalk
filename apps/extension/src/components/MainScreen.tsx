@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import type { CommentStyleKey } from "@m6b9/shared";
+import type { CommentStyleKey } from "@handytalk/shared";
 import { buildPrompt } from "../lib/prompt";
 import { usePostContent } from "../hooks/usePostContent";
 import { useClaude } from "../hooks/useClaude";

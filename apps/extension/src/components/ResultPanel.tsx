@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GifKeywords } from "./GifKeywords";
-import type { ParsedResult } from "@m6b9/shared";
+import type { ParsedResult } from "@handytalk/shared";
 
 interface Props {
   result: ParsedResult;

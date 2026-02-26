@@ -1,4 +1,4 @@
-import type { CommentStyleKey, CommentStyleDef } from "@m6b9/shared";
+import type { CommentStyleKey, CommentStyleDef } from "@handytalk/shared";
 
 export const STYLES: Record<CommentStyleKey, CommentStyleDef> = {
   chill: {

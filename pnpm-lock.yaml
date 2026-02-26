@@ -33,7 +33,7 @@ importers:
 
   apps/extension:
     dependencies:
-      '@m6b9/shared':
+      '@handytalk/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       react:
