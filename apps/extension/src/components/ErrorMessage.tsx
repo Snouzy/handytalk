@@ -4,8 +4,8 @@ interface Props {
 
 export function ErrorMessage({ message }: Props) {
   return (
-    <div className="mt-4 p-3 bg-ig-error-bg rounded-lg">
-      <p className="text-[13px] text-ig-error">{message}</p>
+    <div className="mt-4 p-4 bg-org-rose-bg rounded-2xl animate-slide-up">
+      <p className="text-[13px] text-org-rose">{message}</p>
     </div>
   );
 }

@@ -1,30 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ig-blue: #0095f6;
-  --color-ig-blue-hover: #0081d6;
-  --color-ig-blue-active: #006bbd;
-  --color-ig-text: #262626;
-  --color-ig-muted: #999;
-  --color-ig-subtle: #555;
-  --color-ig-border: #dbdbdb;
-  --color-ig-bg: #f5f5f5;
-  --color-ig-bg-hover: #e8f4ff;
-  --color-ig-warn: #ffc107;
-  --color-ig-warn-bg: #fff8e1;
-  --color-ig-warn-text: #8d6e00;
-  --color-ig-error: #ff4458;
-  --color-ig-error-bg: #fff0f1;
-  --color-ig-success: #4caf50;
-  --color-ig-success-bg: #e0f7e0;
-  --color-ig-tooltip: #262626;
+  /* ── Organic palette ── */
+  --color-org-sage:          oklch(72% 0.05 155);
+  --color-org-sage-light:    oklch(92% 0.03 155);
+  --color-org-sage-deep:     oklch(58% 0.06 155);
+  --color-org-sand:          oklch(95% 0.02 80);
+  --color-org-sand-dark:     oklch(88% 0.03 80);
+  --color-org-earth:         oklch(45% 0.04 50);
+  --color-org-earth-light:   oklch(60% 0.03 50);
+  --color-org-earth-muted:   oklch(72% 0.02 50);
+  --color-org-terracotta:    oklch(62% 0.12 40);
+  --color-org-terracotta-bg: oklch(94% 0.04 40);
+  --color-org-rose:          oklch(60% 0.10 15);
+  --color-org-rose-bg:       oklch(95% 0.03 15);
+  --color-org-moss:          oklch(58% 0.08 145);
+  --color-org-moss-bg:       oklch(93% 0.04 145);
 
-  --animate-spin: spin 0.8s linear infinite;
+  /* ── Fonts ── */
+  --font-serif: Georgia, 'Times New Roman', serif;
 
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+  /* ── Animations ── */
+  --animate-breathe:  breathe 3s ease-in-out infinite;
+  --animate-fade-in:  fade-in 400ms ease-out;
+  --animate-slide-up: slide-up 400ms ease-out;
+
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50%      { transform: scale(1.15); opacity: 1; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 }
 
@@ -39,23 +52,22 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     width: 400px;
-    @apply bg-white text-ig-text;
+    @apply bg-org-sand text-org-earth;
   }
 }
 
-/* Spinner - needs custom border colors */
+/* Spinner — organic breathing pulse */
 @utility spinner {
-  @apply size-8 rounded-full mx-auto animate-spin;
-  border: 3px solid var(--color-ig-border);
-  border-top-color: var(--color-ig-blue);
+  @apply size-8 rounded-full mx-auto animate-breathe;
+  background: radial-gradient(circle, var(--color-org-sage) 30%, transparent 70%);
 }
 
 /* Base UI tooltip overrides — must stay as CSS classes */
 .comment-history__tooltip {
-  @apply max-w-[340px] px-3 py-2 bg-ig-tooltip text-white text-xs leading-relaxed rounded-md break-words z-100;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  @apply max-w-[340px] px-3 py-2 bg-org-earth text-white text-xs leading-relaxed rounded-xl break-words z-100;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   transform-origin: var(--transform-origin);
-  transition: transform 150ms, opacity 150ms;
+  transition: transform 400ms ease-out, opacity 400ms ease-out;
 }
 
 .comment-history__tooltip[data-starting-style],
