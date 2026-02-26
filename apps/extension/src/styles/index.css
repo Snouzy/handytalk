@@ -34,7 +34,7 @@ h1 {
   margin-bottom: 12px;
 }
 
-#api-key-input {
+.api-key-input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #dbdbdb;
@@ -45,7 +45,7 @@ h1 {
   transition: border-color 0.2s;
 }
 
-#api-key-input:focus {
+.api-key-input:focus {
   border-color: #0095f6;
 }
 
@@ -146,12 +146,12 @@ h1 {
 }
 
 /* Loading */
-#loading {
+.loading-container {
   text-align: center;
   padding: 24px 0;
 }
 
-#loading p {
+.loading-container p {
   font-size: 14px;
   color: #999;
   margin-top: 12px;
@@ -172,7 +172,7 @@ h1 {
 }
 
 /* Prompt editor */
-#prompt-editor {
+.prompt-editor {
   margin-top: 16px;
 }
 
@@ -184,7 +184,7 @@ h1 {
   margin-bottom: 6px;
 }
 
-#prompt-input {
+.prompt-input {
   width: 100%;
   padding: 12px;
   border: 1px solid #dbdbdb;
@@ -198,16 +198,16 @@ h1 {
   margin-bottom: 12px;
 }
 
-#prompt-input:focus {
+.prompt-input:focus {
   border-color: #0095f6;
 }
 
 /* Result */
-#result {
+.result-container {
   margin-top: 16px;
 }
 
-#comment-output {
+.comment-output {
   width: 100%;
   padding: 12px;
   border: 1px solid #dbdbdb;
@@ -220,7 +220,7 @@ h1 {
   line-height: 1.5;
 }
 
-#comment-output:focus {
+.comment-output:focus {
   border-color: #0095f6;
 }
 
@@ -262,14 +262,14 @@ h1 {
 }
 
 /* Error */
-#error {
+.error-container {
   margin-top: 16px;
   padding: 12px;
   background: #fff0f1;
   border-radius: 8px;
 }
 
-#error-message {
+.error-message {
   font-size: 13px;
   color: #ff4458;
 }
@@ -282,6 +282,9 @@ h1 {
   font-size: 13px;
   color: #999;
   text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
   transition: color 0.2s;
 }
 

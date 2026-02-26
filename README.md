@@ -27,38 +27,48 @@ handytalk is a Chrome extension that generates authentic, engaging Instagram com
 ### Prerequisites
 
 - Google Chrome
+- [pnpm](https://pnpm.io/) (v9+)
+- Node.js 22+
 - An [Anthropic API key](https://console.anthropic.com/)
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+git clone https://github.com/m6b9/handytalk.git
+cd handytalk
+pnpm install
+pnpm build
+```
 
-   ```bash
-   git clone https://github.com/m6b9/handytalk.git
-   cd handytalk
-   ```
+Then load `apps/extension/dist/` as an unpacked extension in Chrome:
 
-2. **Load in Chrome**
+1. Go to `chrome://extensions/`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked**
+4. Select the `apps/extension/dist/` folder
 
-   - Go to `chrome://extensions/`
-   - Enable **Developer mode** (top right)
-   - Click **Load unpacked**
-   - Select the `handytalk` folder
+### Development
 
-3. **Set up your API key**
+```bash
+pnpm dev   # Vite HMR for popup
+```
 
-   - Click the handytalk extension icon
-   - Enter your Anthropic API key
-   - Done
+## Monorepo Structure
 
-### Usage
+```
+apps/
+  extension/   # Chrome Extension (React + Vite + CRXJS)
+  api/         # Express API scaffold (future)
+packages/
+  shared/      # Shared TypeScript types
+```
 
-1. Navigate to any Instagram post
-2. Click the handytalk icon
-3. Pick a style badge (😎 Chill, 🔥 Controversial, 🧠 Expert, etc.)
-4. Click **Generate** — the post content is extracted and the prompt is shown
-5. Edit the prompt if needed, then click **Send**
-6. Copy the comment or grab a GIF keyword
+### Tech Stack
+
+- **pnpm** workspaces + **Turborepo**
+- **React 19** + **Vite 6** + **TypeScript 5.7**
+- **@crxjs/vite-plugin** v2 for Chrome extension bundling
+- Content script: vanilla TypeScript (no React)
 
 ## Comment Styles
 
@@ -71,22 +81,10 @@ handytalk is a Chrome extension that generates authentic, engaging Instagram com
 | 🤔 **Curious** | Sincere question | Specific question that invites a reply |
 | 🚀 **Hype** | Enthusiastic | Fanboy energy on a specific detail |
 
-## Project Structure
-
-```
-handytalk/
-├── manifest.json    # Chrome extension config (Manifest V3)
-├── popup.html       # Extension popup UI
-├── popup.js         # Prompt building, API calls, style system
-├── content.js       # Instagram DOM extraction (caption, images, comments)
-├── styles.css       # UI styling
-└── icon*.png        # Extension icons
-```
-
 ## How It Works
 
-1. **content.js** extracts the post caption (`li._a9z5 h1`), image alt texts, and optionally comments (`ul._a9ym`)
-2. **popup.js** builds a prompt with the selected style and injects the extracted content
+1. **content.ts** extracts the post caption, image alt texts, and optionally comments from the Instagram DOM
+2. **App.tsx** builds a prompt with the selected style and injects the extracted content
 3. The prompt is sent to Claude API (`claude-opus-4-5-20251101`) with a 200 token limit
 4. The response is parsed into a comment + GIF keywords
 
