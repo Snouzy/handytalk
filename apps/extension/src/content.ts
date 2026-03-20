@@ -1,14 +1,24 @@
-import type { ExtractMessage, ExtractResponse } from "@handytalk/shared";
+import type { ExtractMessage, ExtractResponse, AuthorUsernameResponse } from "@handytalk/shared";
 
 chrome.runtime.onMessage.addListener(
-  (message: ExtractMessage, _sender, sendResponse: (r: ExtractResponse) => void) => {
-    if (message.action === "getPostContent") {
-      const content = extractPostContent(message.includeComments);
+  (message: ExtractMessage, _sender, sendResponse: (r: ExtractResponse | AuthorUsernameResponse) => void) => {
+    if (message.action === "getAuthorUsername") {
+      sendResponse({ username: extractAuthorUsername() });
+    } else if (message.action === "getPostContent") {
+      const content = extractPostContent(message.includeComments ?? false);
       sendResponse({ content });
     }
     return true;
   }
 );
+
+function extractAuthorUsername(): string | null {
+  const article = document.querySelector("article");
+  if (!article) return null;
+  const authorEl = article.querySelector("header a[href]");
+  const authorHref = authorEl?.getAttribute("href");
+  return authorHref?.replace(/\//g, "") || authorEl?.textContent?.trim() || null;
+}
 
 function extractPostContent(includeComments: boolean): string | null {
   const parts: string[] = [];

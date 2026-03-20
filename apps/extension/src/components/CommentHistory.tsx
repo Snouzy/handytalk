@@ -27,8 +27,22 @@ export function CommentHistory({ history }: Props) {
     history.most_recent_days_ago !== null &&
     history.most_recent_days_ago < SPAM_THRESHOLD_DAYS;
 
+  const daysAgoLabel =
+    history.most_recent_days_ago !== null
+      ? history.most_recent_days_ago === 0
+        ? "aujourd'hui"
+        : history.most_recent_days_ago === 1
+          ? "hier"
+          : `il y a ${history.most_recent_days_ago} jours`
+      : null;
+
   return (
     <Tooltip.Provider>
+      {isRecent && (
+        <div className="my-3 px-3 py-2.5 rounded-xl border-2 border-retro-orange bg-retro-orange/10 text-retro-orange text-[13px] font-bold text-center animate-fade-in">
+          ⚠️ Dernier commentaire sur @{history.username} : {daysAgoLabel} — attention au spam !
+        </div>
+      )}
       <div
         className={`relative my-3 ${isRecent ? "retro-card-warn" : "retro-card"}`}
         ref={portalRef}
@@ -48,6 +62,9 @@ export function CommentHistory({ history }: Props) {
           <span>
             📝 {history.total} commentaire{history.total !== 1 ? "s" : ""} sur @
             {history.username}
+            {daysAgoLabel && !isRecent && (
+              <span className="text-retro-brown-mid font-normal"> · dernier {daysAgoLabel}</span>
+            )}
           </span>
         </button>
 

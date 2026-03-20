@@ -1,4 +1,8 @@
-import type { CommentStyleKey, CommentStyleDef } from "@handytalk/shared";
+import type {
+  CommentStyleKey,
+  CommentStyleDef,
+  CommentLanguage,
+} from "@handytalk/shared";
 
 export const STYLES: Record<CommentStyleKey, CommentStyleDef> = {
   chill: {
@@ -39,7 +43,7 @@ export const STYLES: Record<CommentStyleKey, CommentStyleDef> = {
 - Commentaire qui fait sourire ou rire
 - Humour observationnel, autodérision, ou comparaison inattendue
 - Peut être absurde ou décalé tant que c'est lié au contenu du post
-- Le genre de commentaire qui récolte des "mdr" en réponse`,
+- Le genre de commentaire qui récolte des "mdr" en réponse ou des likes`,
   },
   curieux: {
     key: "curieux",
@@ -65,18 +69,7 @@ export const STYLES: Record<CommentStyleKey, CommentStyleDef> = {
 
 export const STYLE_KEYS = Object.keys(STYLES) as CommentStyleKey[];
 
-export function buildPrompt(postContent: string, style: CommentStyleKey): string {
-  return `Tu es un utilisateur Instagram authentique. Génère UN commentaire pour ce post.
-Tu commentes le POST lui-même (la publication de l'auteur), PAS les commentaires des autres utilisateurs.
-
-Contenu du post (caption + description des images):
-\`\`\`
-${postContent}
-\`\`\`
-
-${STYLES[style].prompt}
-
-RÈGLES OBLIGATOIRES:
+const RULES_FR = `RÈGLES OBLIGATOIRES:
 - Référence un détail SPÉCIFIQUE du post (jamais de compliment générique type "Super !" ou "J'adore !")
 - 1-2 phrases max (sauf style expert/controversial où 2-4 phrases sont ok)
 - Écris comme un jeune français GenZ sur Insta: phrases courtes, langage oral, pas de jargon marketing
@@ -86,9 +79,54 @@ RÈGLES OBLIGATOIRES:
 - JAMAIS de hashtags, de tags, de "DM moi", de promotion
 - JAMAIS de phrases creuses: "tellement inspirant", "wow incroyable", "continue comme ça"
 - Varie la structure: ne commence pas toujours par "J'aime" ou "C'est"
-- Le commentaire doit montrer que tu as VRAIMENT lu/regardé le contenu
+- Le commentaire doit montrer que tu as VRAIMENT lu/regardé le contenu`;
 
-FORMAT DE RÉPONSE (respecte exactement ce format):
+const RULES_EN = `MANDATORY RULES:
+- Reference a SPECIFIC detail from the post (never generic compliments like "Great!" or "Love this!")
+- 1-2 sentences max (except expert/controversial styles where 2-4 sentences are ok)
+- Write like a young GenZ person on Instagram: short sentences, casual tone, no marketing jargon
+- Naturally slip in GenZ English expressions when it fits the context: "ngl", "lowkey", "no cap", "fr", "tbh", "idk", "lmao", "bruh", "vibe", "slay", "it's giving", "deadass", "bet", "fam". No more than 1-2 per comment, keep it natural not forced.
+- The ENTIRE comment must be written in lowercase, never capitalize (even at the start of a sentence)
+- Maximum 1 emoji, only if it sounds natural (often 0 is better)
+- NEVER use hashtags, tags, "DM me", or any promotion
+- NEVER use hollow phrases: "so inspiring", "wow amazing", "keep it up"
+- Vary the structure: don't always start with "I love" or "This is"
+- The comment must show you ACTUALLY read/watched the content`;
+
+export function buildPrompt(
+  postContent: string,
+  style: CommentStyleKey,
+  language: CommentLanguage = "fr",
+): string {
+  const isFr = language === "fr";
+  const rules = isFr ? RULES_FR : RULES_EN;
+
+  return `${
+    isFr
+      ? "Tu es un utilisateur Instagram authentique. Génère UN commentaire pour ce post.\nTu commentes le POST lui-même (la publication de l'auteur), PAS les commentaires des autres utilisateurs."
+      : "You are an authentic Instagram user. Generate ONE comment for this post.\nYou are commenting on the POST itself (the author's publication), NOT other users' comments."
+  }
+
+${
+  isFr
+    ? "Contenu du post (caption + description des images):"
+    : "Post content (caption + image descriptions):"
+}
+\`\`\`
+${postContent}
+\`\`\`
+
+${STYLES[style].prompt}
+
+${rules}
+
+${
+  isFr
+    ? `FORMAT DE RÉPONSE (respecte exactement ce format):
 COMMENT: [ton commentaire ici]
-GIFS: [3-4 mots-clés courts en anglais pour chercher un GIF pertinent sur Instagram, séparés par des virgules]`;
+GIFS: [3-4 mots-clés courts en anglais pour chercher un GIF pertinent sur Instagram, séparés par des virgules]`
+    : `RESPONSE FORMAT (follow this format exactly):
+COMMENT: [your comment here]
+GIFS: [3-4 short English keywords to search for a relevant GIF on Instagram, separated by commas]`
+}`;
 }

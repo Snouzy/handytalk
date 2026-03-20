@@ -3,10 +3,14 @@ export interface PostContent {
 }
 
 export interface ExtractMessage {
-  action: "getPostContent";
-  includeComments: boolean;
+  action: "getPostContent" | "getAuthorUsername";
+  includeComments?: boolean;
 }
 
 export interface ExtractResponse {
   content: string | null;
+}
+
+export interface AuthorUsernameResponse {
+  username: string | null;
 }

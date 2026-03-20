@@ -1,6 +1,7 @@
 export type {
   CommentStyleKey,
   CommentStyleDef,
+  CommentLanguage,
 } from "./types/styles";
 
 export type {
@@ -13,4 +14,5 @@ export type {
   PostContent,
   ExtractMessage,
   ExtractResponse,
+  AuthorUsernameResponse,
 } from "./types/instagram";

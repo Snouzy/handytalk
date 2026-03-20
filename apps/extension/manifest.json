@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Instagram Comment Generator",
+  "name": "HandyTalk - Instagram Comment Generator",
   "version": "1.0",
   "description": "Generate smart Instagram comments using Claude AI",
   "permissions": ["activeTab", "storage", "scripting"],
