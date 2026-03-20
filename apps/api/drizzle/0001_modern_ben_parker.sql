@@ -1,0 +1,1 @@
+ALTER TABLE "comment_history" ADD COLUMN "post_url" varchar(256);

@@ -6,7 +6,7 @@ import { commentHistory } from "../db/schema";
 export const commentsRouter: IRouter = Router();
 
 commentsRouter.post("/", async (req, res) => {
-  const { username, comment_text, style } = req.body;
+  const { username, comment_text, style, post_url } = req.body;
 
   if (!username || !comment_text || !style) {
     res.status(400).json({ error: "username, comment_text, and style are required" });
@@ -19,6 +19,7 @@ commentsRouter.post("/", async (req, res) => {
       instagramUsername: username,
       commentText: comment_text,
       style,
+      postUrl: post_url || null,
     })
     .returning();
 
@@ -74,6 +75,7 @@ commentsRouter.get("/:username/history", async (req, res) => {
       style: row.style,
       commented_at: row.commentedAt.toISOString(),
       days_ago: daysAgo,
+      post_url: row.postUrl,
     };
   });
 

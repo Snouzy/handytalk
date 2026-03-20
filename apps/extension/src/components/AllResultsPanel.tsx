@@ -18,6 +18,7 @@ interface Props {
   onRegenerateSingle: (styleKey: CommentStyleKey) => void;
   onRegenerateAll: () => void;
   authorUsername: string | null;
+  postUrl?: string;
 }
 
 function SingleResult({
@@ -25,11 +26,13 @@ function SingleResult({
   data,
   onRegenerate,
   authorUsername,
+  postUrl,
 }: {
   styleKey: CommentStyleKey;
   data: StyleResult;
   onRegenerate: () => void;
   authorUsername: string | null;
+  postUrl?: string;
 }) {
   const [copyLabel, setCopyLabel] = useState("📋");
   const [posted, setPosted] = useState(false);
@@ -44,7 +47,7 @@ function SingleResult({
 
   const handlePosted = () => {
     if (!authorUsername || !data.result) return;
-    recordComment(authorUsername, data.result.comment, styleKey);
+    recordComment(authorUsername, data.result.comment, styleKey, postUrl);
     setPosted(true);
   };
 
@@ -105,6 +108,7 @@ export function AllResultsPanel({
   onRegenerateSingle,
   onRegenerateAll,
   authorUsername,
+  postUrl,
 }: Props) {
   return (
     <div className="mt-4 animate-slide-up">
@@ -130,6 +134,7 @@ export function AllResultsPanel({
               data={data}
               onRegenerate={() => onRegenerateSingle(key)}
               authorUsername={authorUsername}
+              postUrl={postUrl}
             />
           );
         })}

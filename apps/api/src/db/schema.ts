@@ -8,6 +8,7 @@ export const commentHistory = pgTable(
     commentedAt: timestamp("commented_at", { mode: "date" }).notNull().defaultNow(),
     commentText: text("comment_text").notNull(),
     style: varchar("style", { length: 32 }).notNull(),
+    postUrl: varchar("post_url", { length: 256 }),
   },
   (table) => [
     index("idx_comment_history_username").on(table.instagramUsername),

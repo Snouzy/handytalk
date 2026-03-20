@@ -19,6 +19,11 @@ function truncate(text: string, max: number): string {
   return text.length > max ? text.slice(0, max) + "…" : text;
 }
 
+function shortPostId(url: string): string {
+  const match = url.match(/\/(p|reel|tv)\/([^/?]+)/);
+  return match ? match[2] : "post";
+}
+
 export function CommentHistory({ history }: Props) {
   const [open, setOpen] = useState(false);
   const portalRef = useRef<HTMLDivElement>(null);
@@ -77,11 +82,23 @@ export function CommentHistory({ history }: Props) {
               return (
                 <li key={c.id} className="p-2 bg-retro-cream rounded-lg border border-retro-brown-light">
                   <div className="flex items-center justify-between mb-1">
-                    {styleDef && (
-                      <span className="text-[11px] font-bold px-2 py-0.5 bg-retro-purple-light rounded-full text-retro-purple border border-retro-purple">
-                        {styleDef.emoji} {styleDef.label}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {styleDef && (
+                        <span className="text-[11px] font-bold px-2 py-0.5 bg-retro-purple-light rounded-full text-retro-purple border border-retro-purple">
+                          {styleDef.emoji} {styleDef.label}
+                        </span>
+                      )}
+                      {c.post_url && (
+                        <a
+                          href={c.post_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] font-semibold px-2 py-0.5 bg-retro-cream rounded-full text-retro-brown-mid border border-retro-brown-light hover:text-retro-purple hover:border-retro-purple no-underline"
+                        >
+                          🔗 {shortPostId(c.post_url)}
+                        </a>
+                      )}
+                    </div>
                     <span className="text-[11px] text-retro-brown-mid font-semibold">
                       {formatDate(c.commented_at)}
                     </span>

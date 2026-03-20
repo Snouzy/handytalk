@@ -7,6 +7,7 @@ export interface CommentHistoryEntry {
   style: string;
   commented_at: string;
   days_ago: number;
+  post_url: string | null;
 }
 
 export interface CommentHistoryResponse {
@@ -26,12 +27,12 @@ export async function fetchCommentHistory(username: string): Promise<CommentHist
   }
 }
 
-export async function recordComment(username: string, commentText: string, style: string): Promise<void> {
+export async function recordComment(username: string, commentText: string, style: string, postUrl?: string): Promise<void> {
   try {
     await fetch(`${API_BASE}/api/comments`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, comment_text: commentText, style }),
+      body: JSON.stringify({ username, comment_text: commentText, style, post_url: postUrl }),
     });
   } catch {
     // fail silently

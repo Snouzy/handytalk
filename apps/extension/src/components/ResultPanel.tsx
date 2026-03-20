@@ -8,9 +8,10 @@ interface Props {
   onRegenerate: () => void;
   authorUsername: string | null;
   style: CommentStyleKey;
+  postUrl?: string;
 }
 
-export function ResultPanel({ result, onRegenerate, authorUsername, style }: Props) {
+export function ResultPanel({ result, onRegenerate, authorUsername, style, postUrl }: Props) {
   const [copyLabel, setCopyLabel] = useState("📋 Copier");
   const [posted, setPosted] = useState(false);
 
@@ -22,7 +23,7 @@ export function ResultPanel({ result, onRegenerate, authorUsername, style }: Pro
 
   const handlePosted = () => {
     if (!authorUsername) return;
-    recordComment(authorUsername, result.comment, style);
+    recordComment(authorUsername, result.comment, style, postUrl);
     setPosted(true);
   };
 

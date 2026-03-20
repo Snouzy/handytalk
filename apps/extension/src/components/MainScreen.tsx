@@ -28,6 +28,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [commentHistory, setCommentHistory] = useState<CommentHistoryResponse | null>(null);
   const [allStyleResults, setAllStyleResults] = useState<AllStyleResults>({});
+  const [postUrl, setPostUrl] = useState<string | undefined>();
 
   const { postContent, authorUsername, error: extractError, extract } = usePostContent();
   const { result, loading: claudeLoading, error: claudeError, send, reset } = useClaude(apiKey);
@@ -38,6 +39,8 @@ export function MainScreen({ apiKey, onSettings }: Props) {
       try {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab?.url?.includes("instagram.com") || !tab.id) return;
+
+        setPostUrl(tab.url);
 
         let response: AuthorUsernameResponse | undefined;
         try {
@@ -230,7 +233,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
       )}
 
       {phase === "done" && result && (
-        <ResultPanel result={result} onRegenerate={handleRegenerate} authorUsername={authorUsername} style={style} />
+        <ResultPanel result={result} onRegenerate={handleRegenerate} authorUsername={authorUsername} style={style} postUrl={postUrl} />
       )}
 
       {(phase === "generating-all" || phase === "done-all") && (
@@ -239,6 +242,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
           onRegenerateSingle={handleRegenerateSingle}
           onRegenerateAll={handleGenerateAll}
           authorUsername={authorUsername}
+          postUrl={postUrl}
         />
       )}
 
