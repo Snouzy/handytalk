@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import type { CommentStyleKey, CommentLanguage, AuthorUsernameResponse } from "@handytalk/shared";
+import type { CommentStyleKey, CommentLanguage, AuthorUsernameResponse, ScreenshotData } from "@handytalk/shared";
 import { buildPrompt, STYLE_KEYS } from "../lib/prompt";
 import { callClaude, parseResponse } from "../lib/claude";
 import { fetchCommentHistory, type CommentHistoryResponse } from "../lib/api";
@@ -30,7 +30,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
   const [allStyleResults, setAllStyleResults] = useState<AllStyleResults>({});
   const [postUrl, setPostUrl] = useState<string | undefined>();
 
-  const { postContent, authorUsername, error: extractError, extract } = usePostContent();
+  const { screenshot, authorUsername, error: extractError, extract } = usePostContent();
   const { result, loading: claudeLoading, error: claudeError, send, reset } = useClaude(apiKey);
 
   // Auto-fetch comment history when extension opens
@@ -70,50 +70,49 @@ export function MainScreen({ apiKey, onSettings }: Props) {
     setPhase("extracting");
     setCommentHistory(null);
     reset();
-    const content = await extract(includeComments);
-    if (!content) {
+
+    const result = await extract();
+    if (!result) {
       setPhase("idle");
       return;
     }
 
-    const usernameMatch = content.match(/\[Auteur: @(.+?)\]/);
-    const username = usernameMatch?.[1];
-    if (username) {
-      const history = await fetchCommentHistory(username);
+    if (result.authorUsername) {
+      const history = await fetchCommentHistory(result.authorUsername);
       if (history && history.total > 0) {
         setCommentHistory(history);
       }
     }
 
-    setPrompt(buildPrompt(content, style, language));
+    setPrompt(buildPrompt(style, language, includeComments));
     setPhase("editing");
-  }, [extract, includeComments, style, language, reset]);
+  }, [extract, style, language, includeComments, reset]);
 
   const handleSend = useCallback(async () => {
     setPhase("sending");
-    await send(prompt);
+    await send(prompt, screenshot ?? undefined);
     setPhase("done");
-  }, [send, prompt]);
+  }, [send, prompt, screenshot]);
 
   const handleRegenerate = useCallback(() => {
-    if (postContent) {
-      setPrompt(buildPrompt(postContent, style, language));
+    if (screenshot) {
+      setPrompt(buildPrompt(style, language, includeComments));
       setPhase("editing");
       reset();
     } else {
       handleGenerate();
     }
-  }, [postContent, style, language, reset, handleGenerate]);
+  }, [screenshot, style, language, includeComments, reset, handleGenerate]);
 
   const generateForStyle = useCallback(
-    async (content: string, styleKey: CommentStyleKey) => {
+    async (screenshotData: ScreenshotData, styleKey: CommentStyleKey) => {
       setAllStyleResults((prev) => ({
         ...prev,
         [styleKey]: { result: null, loading: true, error: null },
       }));
       try {
-        const p = buildPrompt(content, styleKey, language);
-        const raw = await callClaude(apiKey, p);
+        const p = buildPrompt(styleKey, language, includeComments);
+        const raw = await callClaude(apiKey, p, screenshotData);
         const parsed = parseResponse(raw);
         setAllStyleResults((prev) => ({
           ...prev,
@@ -127,7 +126,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
         }));
       }
     },
-    [apiKey, language]
+    [apiKey, language, includeComments]
   );
 
   const handleGenerateAll = useCallback(async () => {
@@ -136,16 +135,14 @@ export function MainScreen({ apiKey, onSettings }: Props) {
     setCommentHistory(null);
     reset();
 
-    const content = await extract(includeComments);
-    if (!content) {
+    const result = await extract();
+    if (!result) {
       setPhase("idle");
       return;
     }
 
-    const usernameMatch = content.match(/\[Auteur: @(.+?)\]/);
-    const username = usernameMatch?.[1];
-    if (username) {
-      const history = await fetchCommentHistory(username);
+    if (result.authorUsername) {
+      const history = await fetchCommentHistory(result.authorUsername);
       if (history && history.total > 0) setCommentHistory(history);
     }
 
@@ -156,18 +153,18 @@ export function MainScreen({ apiKey, onSettings }: Props) {
     setAllStyleResults(initial);
 
     await Promise.allSettled(
-      STYLE_KEYS.map((key) => generateForStyle(content, key))
+      STYLE_KEYS.map((key) => generateForStyle(result.screenshot, key))
     );
     setPhase("done-all");
-  }, [extract, includeComments, reset, generateForStyle]);
+  }, [extract, reset, generateForStyle]);
 
   const handleRegenerateSingle = useCallback(
     (styleKey: CommentStyleKey) => {
-      if (postContent) {
-        generateForStyle(postContent, styleKey);
+      if (screenshot) {
+        generateForStyle(screenshot, styleKey);
       }
     },
-    [postContent, generateForStyle]
+    [screenshot, generateForStyle]
   );
 
   const globalError = extractError || claudeError;
@@ -202,7 +199,7 @@ export function MainScreen({ apiKey, onSettings }: Props) {
           checked={includeComments}
           onChange={(e) => setIncludeComments(e.target.checked)}
         />
-        <span>💬 Inclure les commentaires</span>
+        <span>💬 Utiliser les commentaires comme contexte</span>
       </label>
 
       {(phase === "idle" || globalError) && (

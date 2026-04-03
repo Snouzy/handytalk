@@ -3,7 +3,7 @@ import express from "express";
 import { commentsRouter } from "./routes/comments";
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3456;
 
 app.use(express.json());
 

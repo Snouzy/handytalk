@@ -1,17 +1,13 @@
 import { useState, useCallback } from "react";
-
-function parseAuthorUsername(content: string): string | null {
-  const match = content.match(/\[Auteur: @(.+?)\]/);
-  return match ? match[1] : null;
-}
+import type { ScreenshotData } from "@handytalk/shared";
 
 export function usePostContent() {
-  const [postContent, setPostContent] = useState<string | null>(null);
+  const [screenshot, setScreenshot] = useState<ScreenshotData | null>(null);
   const [authorUsername, setAuthorUsername] = useState<string | null>(null);
   const [extracting, setExtracting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const extract = useCallback(async (includeComments: boolean) => {
+  const extract = useCallback(async () => {
     setExtracting(true);
     setError(null);
 
@@ -27,35 +23,36 @@ export function usePostContent() {
         );
       }
 
-      let content: string | null = null;
+      // Capture screenshot of the visible tab
+      const dataUrl = await chrome.tabs.captureVisibleTab({
+        format: "jpeg",
+        quality: 80,
+      });
+      const [header, base64Data] = dataUrl.split(",");
+      const mediaType = header.match(/data:(.*?);/)?.[1] || "image/jpeg";
+      const screenshotData: ScreenshotData = { base64: base64Data, mediaType };
 
+      // Extract author username via content script (for comment history)
+      let username: string | null = null;
       try {
         const response = await chrome.tabs.sendMessage(tab.id!, {
-          action: "getPostContent",
-          includeComments,
+          action: "getAuthorUsername",
         });
-        content = response?.content;
+        username = response?.username;
       } catch {
         await chrome.scripting.executeScript({
           target: { tabId: tab.id! },
           files: ["src/content.ts"],
         });
         const response = await chrome.tabs.sendMessage(tab.id!, {
-          action: "getPostContent",
-          includeComments,
+          action: "getAuthorUsername",
         });
-        content = response?.content;
+        username = response?.username;
       }
 
-      if (!content) {
-        throw new Error(
-          "Impossible d'extraire le contenu du post. Assurez-vous d'être sur un post Instagram."
-        );
-      }
-
-      setPostContent(content);
-      setAuthorUsername(parseAuthorUsername(content));
-      return content;
+      setScreenshot(screenshotData);
+      setAuthorUsername(username);
+      return { screenshot: screenshotData, authorUsername: username };
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "Une erreur est survenue.";
@@ -66,5 +63,5 @@ export function usePostContent() {
     }
   }, []);
 
-  return { postContent, authorUsername, extracting, error, extract, setPostContent };
+  return { screenshot, authorUsername, extracting, error, extract };
 }

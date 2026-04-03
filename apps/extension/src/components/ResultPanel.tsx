@@ -14,6 +14,7 @@ interface Props {
 export function ResultPanel({ result, onRegenerate, authorUsername, style, postUrl }: Props) {
   const [copyLabel, setCopyLabel] = useState("📋 Copier");
   const [posted, setPosted] = useState(false);
+  const [postedAt, setPostedAt] = useState<string | null>(null);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(result.comment);
@@ -25,6 +26,7 @@ export function ResultPanel({ result, onRegenerate, authorUsername, style, postU
     if (!authorUsername) return;
     recordComment(authorUsername, result.comment, style, postUrl);
     setPosted(true);
+    setPostedAt(new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
   };
 
   return (
@@ -54,7 +56,7 @@ export function ResultPanel({ result, onRegenerate, authorUsername, style, postU
           onClick={handlePosted}
           disabled={posted || !authorUsername}
         >
-          {posted ? "✅ Enregistré" : "📌 J'ai posté"}
+          {posted ? `✅ Posté à ${postedAt}` : "📌 J'ai posté"}
         </button>
       </div>
       <GifKeywords gifs={result.gifs} />

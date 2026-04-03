@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { callClaude, parseResponse } from "../lib/claude";
-import type { ParsedResult } from "@handytalk/shared";
+import type { ParsedResult, ScreenshotData } from "@handytalk/shared";
 
 export function useClaude(apiKey: string | null) {
   const [result, setResult] = useState<ParsedResult | null>(null);
@@ -8,7 +8,7 @@ export function useClaude(apiKey: string | null) {
   const [error, setError] = useState<string | null>(null);
 
   const send = useCallback(
-    async (prompt: string): Promise<ParsedResult | null> => {
+    async (prompt: string, screenshot?: ScreenshotData): Promise<ParsedResult | null> => {
       if (!apiKey) {
         setError("Clé API manquante.");
         return null;
@@ -19,7 +19,7 @@ export function useClaude(apiKey: string | null) {
       setResult(null);
 
       try {
-        const raw = await callClaude(apiKey, prompt);
+        const raw = await callClaude(apiKey, prompt, screenshot);
         const parsed = parseResponse(raw);
         setResult(parsed);
         return parsed;

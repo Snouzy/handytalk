@@ -1,6 +1,17 @@
-import type { ParsedResult } from "@handytalk/shared";
+import type { ParsedResult, ScreenshotData, ClaudeContentBlock } from "@handytalk/shared";
 
-export async function callClaude(apiKey: string, prompt: string): Promise<string> {
+export async function callClaude(
+  apiKey: string,
+  prompt: string,
+  screenshot?: ScreenshotData,
+): Promise<string> {
+  const content: string | ClaudeContentBlock[] = screenshot
+    ? [
+        { type: "image", source: { type: "base64", media_type: screenshot.mediaType, data: screenshot.base64 } },
+        { type: "text", text: prompt },
+      ]
+    : prompt;
+
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -12,7 +23,7 @@ export async function callClaude(apiKey: string, prompt: string): Promise<string
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 200,
-      messages: [{ role: "user", content: prompt }],
+      messages: [{ role: "user", content }],
     }),
   });
 

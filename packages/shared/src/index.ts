@@ -5,14 +5,14 @@ export type {
 } from "./types/styles";
 
 export type {
+  ClaudeContentBlock,
   ClaudeRequest,
   ClaudeResponse,
   ParsedResult,
 } from "./types/api";
 
 export type {
-  PostContent,
   ExtractMessage,
-  ExtractResponse,
   AuthorUsernameResponse,
+  ScreenshotData,
 } from "./types/instagram";

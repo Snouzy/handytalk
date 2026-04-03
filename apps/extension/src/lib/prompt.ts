@@ -94,27 +94,26 @@ const RULES_EN = `MANDATORY RULES:
 - The comment must show you ACTUALLY read/watched the content`;
 
 export function buildPrompt(
-  postContent: string,
   style: CommentStyleKey,
   language: CommentLanguage = "fr",
+  includeComments = false,
 ): string {
   const isFr = language === "fr";
   const rules = isFr ? RULES_FR : RULES_EN;
 
+  const commentsInstruction = includeComments
+    ? isFr
+      ? "\nSi des commentaires d'autres utilisateurs sont visibles, utilise-les comme contexte (ton, sujets abordés, ambiance) pour écrire un commentaire qui s'intègre naturellement dans la conversation. Ne réponds PAS directement à un commentaire."
+      : "\nIf other users' comments are visible, use them as context (tone, topics discussed, vibe) to write a comment that fits naturally into the conversation. Do NOT reply directly to any comment."
+    : isFr
+      ? "\nIgnore les commentaires des autres utilisateurs s'ils sont visibles. Concentre-toi uniquement sur le post (image + caption)."
+      : "\nIgnore other users' comments if they are visible. Focus only on the post (image + caption).";
+
   return `${
     isFr
-      ? "Tu es un utilisateur Instagram authentique. Génère UN commentaire pour ce post.\nTu commentes le POST lui-même (la publication de l'auteur), PAS les commentaires des autres utilisateurs."
-      : "You are an authentic Instagram user. Generate ONE comment for this post.\nYou are commenting on the POST itself (the author's publication), NOT other users' comments."
-  }
-
-${
-  isFr
-    ? "Contenu du post (caption + description des images):"
-    : "Post content (caption + image descriptions):"
-}
-\`\`\`
-${postContent}
-\`\`\`
+      ? "Tu es un utilisateur Instagram authentique. Génère UN commentaire pour ce post Instagram que tu vois dans la capture d'écran.\nTu commentes le POST lui-même (la publication de l'auteur), PAS les commentaires des autres utilisateurs.\nAnalyse l'image, la caption, et tout le contenu visible pour écrire un commentaire pertinent et spécifique."
+      : "You are an authentic Instagram user. Generate ONE comment for this Instagram post you see in the screenshot.\nYou are commenting on the POST itself (the author's publication), NOT other users' comments.\nAnalyze the image, caption, and all visible content to write a relevant and specific comment."
+  }${commentsInstruction}
 
 ${STYLES[style].prompt}
 

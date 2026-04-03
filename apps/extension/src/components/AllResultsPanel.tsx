@@ -36,6 +36,7 @@ function SingleResult({
 }) {
   const [copyLabel, setCopyLabel] = useState("📋");
   const [posted, setPosted] = useState(false);
+  const [postedAt, setPostedAt] = useState<string | null>(null);
   const style = STYLES[styleKey];
 
   const handleCopy = async () => {
@@ -49,6 +50,7 @@ function SingleResult({
     if (!authorUsername || !data.result) return;
     recordComment(authorUsername, data.result.comment, styleKey, postUrl);
     setPosted(true);
+    setPostedAt(new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
   };
 
   return (
@@ -93,7 +95,7 @@ function SingleResult({
               onClick={handlePosted}
               disabled={posted || !authorUsername}
             >
-              {posted ? "✅" : "📌 Posté"}
+              {posted ? `✅ ${postedAt}` : "📌 J'ai posté"}
             </button>
           </div>
           <GifKeywords gifs={data.result.gifs} />

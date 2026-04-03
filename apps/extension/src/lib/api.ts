@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3001";
+const API_BASE = "http://localhost:3456";
 export const SPAM_THRESHOLD_DAYS = 3;
 
 export interface CommentHistoryEntry {

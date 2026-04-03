@@ -11,9 +11,9 @@ export default defineConfig({
     emptyOutDir: true,
   },
   server: {
-    port: 5173,
+    port: 5188,
     strictPort: true,
-    hmr: { port: 5173 },
+    hmr: { port: 5188 },
     cors: { origin: "*" },
   },
 });
