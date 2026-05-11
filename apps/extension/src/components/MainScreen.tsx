@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import type { CommentStyleKey, CommentLanguage, AuthorUsernameResponse, ScreenshotData } from "@handytalk/shared";
 import { buildPrompt, STYLE_KEYS } from "../lib/prompt";
 import { callClaude, parseResponse } from "../lib/claude";
-import { fetchCommentHistory, type CommentHistoryResponse } from "../lib/api";
+import { fetchCommentHistory, recordComment, type CommentHistoryResponse } from "../lib/api";
 import { usePostContent } from "../hooks/usePostContent";
 import { useClaude } from "../hooks/useClaude";
 import { StyleBadges } from "./StyleBadges";
@@ -167,6 +167,32 @@ export function MainScreen({ apiKey, onSettings }: Props) {
     [screenshot, generateForStyle]
   );
 
+  const [manualPosted, setManualPosted] = useState(false);
+  const [manualPostedAt, setManualPostedAt] = useState<string | null>(null);
+
+  const handleManualPosted = useCallback(async () => {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab?.url?.includes("instagram.com") || !tab.id) return;
+
+    let username: string | null = null;
+    try {
+      const response = await chrome.tabs.sendMessage(tab.id, { action: "getAuthorUsername" });
+      username = response?.username;
+    } catch {
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["src/content.ts"],
+      });
+      const response = await chrome.tabs.sendMessage(tab.id, { action: "getAuthorUsername" });
+      username = response?.username;
+    }
+
+    if (!username) return;
+    await recordComment(username, "(commentaire manuel)", "manual", tab.url);
+    setManualPosted(true);
+    setManualPostedAt(new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }));
+  }, []);
+
   const globalError = extractError || claudeError;
 
   return (
@@ -203,18 +229,27 @@ export function MainScreen({ apiKey, onSettings }: Props) {
       </label>
 
       {(phase === "idle" || globalError) && (
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <button
+              className="retro-btn flex-1 py-2.5 px-4 bg-retro-mustard text-retro-brown"
+              onClick={handleGenerate}
+            >
+              ✨ Générer
+            </button>
+            <button
+              className="retro-btn flex-1 py-2.5 px-4 bg-retro-purple text-white"
+              onClick={handleGenerateAll}
+            >
+              🎯 Tous les styles
+            </button>
+          </div>
           <button
-            className="retro-btn flex-1 py-2.5 px-4 bg-retro-mustard text-retro-brown"
-            onClick={handleGenerate}
+            className={`retro-btn w-full py-2 px-4 text-[13px] ${manualPosted ? "bg-retro-green/20 text-retro-green cursor-default" : "bg-retro-cream text-retro-brown-mid hover:bg-retro-brown-light/20"}`}
+            onClick={handleManualPosted}
+            disabled={manualPosted}
           >
-            ✨ Générer
-          </button>
-          <button
-            className="retro-btn flex-1 py-2.5 px-4 bg-retro-purple text-white"
-            onClick={handleGenerateAll}
-          >
-            🎯 Tous les styles
+            {manualPosted ? `✅ Enregistré à ${manualPostedAt}` : "📌 J'ai commenté manuellement"}
           </button>
         </div>
       )}
